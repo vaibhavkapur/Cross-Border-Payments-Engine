@@ -5,13 +5,21 @@ nav_order: 11
 ---
 
 # Workers
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Background task processing with Celery for asynchronous settlement operations.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Worker Configuration](#worker-configuration)
+- [Defined Tasks](#defined-tasks)
+- [Running Workers](#running-workers)
+- [Current vs Future State](#current-vs-future-state)
+- [Planned Workers](#planned-workers)
+- [Environment Variables](#environment-variables)
 
 ---
 

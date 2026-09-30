@@ -5,13 +5,22 @@ nav_order: 12
 ---
 
 # Configuration
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Environment variables, settings, and configuration options for the Cross-Border Payments Engine.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [Database](#database)
+- [Redis](#redis)
+- [FX & Pricing](#fx--pricing)
+- [SWIFT Comparison](#swift-comparison)
+- [API Server](#api-server)
+- [Complete `.env` Example](#complete-env-example)
+- [Docker Compose Services](#docker-compose-services)
+- [Settings Class](#settings-class)
 
 ---
 
@@ -97,7 +106,6 @@ HOST=0.0.0.0
 PORT=8000
 ```
 
-{: .warning }
 Never commit `.env` files to version control. Add `.env` to your `.gitignore` file. The repository includes sensible defaults for all configuration values — a `.env` file is only needed to override them.
 
 ## Docker Compose Services

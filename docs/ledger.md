@@ -5,13 +5,21 @@ nav_order: 7
 ---
 
 # Ledger System
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Double-entry bookkeeping that tracks every value movement across the transfer lifecycle.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [Accounting Principles](#accounting-principles)
+- [Entry Types](#entry-types)
+- [Account Chart](#account-chart)
+- [Transfer Lifecycle Entries](#transfer-lifecycle-entries)
+- [Ledger Entry Schema](#ledger-entry-schema)
+- [API Access](#api-access)
+- [Reconciliation](#reconciliation)
 
 ---
 
@@ -65,14 +73,13 @@ The ledger system (`app/ledger/service.py`) implements double-entry accounting p
 | 1 | `funding` | Cash_USD_Omnibus | Customer_Funding_Liability | 500.00 | USD |
 | 2 | `fee` | Customer_Funding_Liability | Platform_Fee_Revenue | 1.50 | USD |
 | 3 | `treasury` | USDC_Treasury_Asset | Customer_Funding_Liability | 496.15 | USD |
-| 4 | `payout` | Recipient_Payout_Liability | India_Settlement_Clearing | 41,279.88 | INR |
-| 5 | `settlement` | India_Settlement_Clearing | Recipient_Settled | 41,279.88 | INR |
+| 4 | `payout` | Recipient_Payout_Liability | India_Settlement_Clearing | 41,279.68 | INR |
+| 5 | `settlement` | India_Settlement_Clearing | Recipient_Settled | 41,279.68 | INR |
 
 **Verification**: On the USD side, the Customer_Funding_Liability account nets to zero:
 - Credited $500.00 (funding)
 - Debited $1.50 (fee) + $496.15 (treasury) = $497.65
 
-{: .note }
 The remaining $2.35 difference is the FX spread, which is captured in the treasury conversion. The net amount converted ($496.15) already has fees and spread deducted.
 
 ### Failed Transfer

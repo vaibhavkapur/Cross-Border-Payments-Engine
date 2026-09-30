@@ -5,13 +5,22 @@ nav_order: 2
 ---
 
 # Getting Started
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Set up the Cross-Border Payments Engine locally and execute your first USD→INR transfer in minutes.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Prerequisites](#prerequisites)
+- [Clone the Repository](#clone-the-repository)
+- [Quick Start (SQLite)](#quick-start-sqlite)
+- [Docker Compose Setup](#docker-compose-setup)
+- [Environment Configuration](#environment-configuration)
+- [Run Migrations](#run-migrations)
+- [Make Your First Transfer](#make-your-first-transfer)
+- [Run the Demo Script](#run-the-demo-script)
+- [What's Next](#whats-next)
 
 ---
 
@@ -28,8 +37,8 @@ Set up the Cross-Border Payments Engine locally and execute your first USD→INR
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/vaibhavkapur22/Cross-border-Payments-Engine.git
-cd Cross-border-Payments-Engine
+git clone https://github.com/vaibhavkapur/Cross-Border-Payments-Engine.git
+cd Cross-Border-Payments-Engine
 ```
 
 ## Quick Start (SQLite)
@@ -43,6 +52,8 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+# SQLite driver for the default local database
+pip install aiosqlite
 
 # Run database migrations
 alembic upgrade head
@@ -125,57 +136,56 @@ curl -s -X POST http://localhost:8000/quotes \
   -d '{
     "source_currency": "USD",
     "target_currency": "INR",
-    "source_amount": 500.00
+    "amount": 500.00
   }' | python -m json.tool
 ```
 
 ```json
 {
-  "id": "q_abc123",
-  "source_currency": "USD",
-  "target_currency": "INR",
-  "source_amount": 500.0,
-  "fx_rate": 83.2,
-  "platform_fee": 1.5,
-  "network_fee": 0.35,
-  "fx_spread": 2.0,
-  "estimated_target_amount": 41279.88,
-  "expires_at": "2026-03-26T12:05:00Z",
-  "created_at": "2026-03-26T12:00:00Z"
+  "quote_id": "qt_abc123",
+  "source_amount_usd": 500.0,
+  "fx_rate_usd_inr": 83.2,
+  "platform_fee_usd": 1.5,
+  "network_fee_usd": 0.35,
+  "fx_spread_usd": 2.0,
+  "recipient_amount_inr": 41279.68,
+  "expires_at": "2026-09-26T12:05:00Z"
 }
 ```
 
-The quote is valid for 5 minutes. Fee breakdown:
+The quote is valid for 5 minutes by default; example timestamps are illustrative. Fee breakdown:
 - **Platform fee**: $1.50
 - **Network fee**: $0.35
 - **FX spread** (0.4%): $2.00
-- **Net amount converted**: $496.15 × 83.20 = **₹41,279.88**
+- **Net amount converted**: $496.15 × 83.20 = **₹41,279.68**
 
 ### Step 2: Create a Transfer
 
-Use the quote ID to initiate the transfer:
+Use the returned `quote_id` to initiate the transfer. Replace the illustrative `qt_abc123` below and use the returned `transfer_id` in later steps:
 
 ```bash
 curl -s -X POST http://localhost:8000/transfers \
   -H "Content-Type: application/json" \
   -d '{
-    "quote_id": "q_abc123",
-    "sender_id": "user_001",
-    "recipient_name": "Raj Patel",
-    "recipient_bank_hint": "HDFC****1234",
+    "quote_id": "qt_abc123",
+    "recipient": {"name": "Raj Patel", "bank_account_hint": "HDFC ****1234"},
     "idempotency_key": "txn-001-unique"
   }' | python -m json.tool
 ```
 
 ```json
 {
-  "id": "t_xyz789",
-  "quote_id": "q_abc123",
-  "status": "created",
+  "transfer_id": "tx_xyz789",
+  "quote_id": "qt_abc123",
   "source_amount": 500.0,
-  "target_amount_estimated": 41279.88,
+  "target_amount_estimated": 41279.68,
+  "target_amount_final": null,
+  "status": "quoted",
+  "route_type": "stablecoin",
   "recipient_name": "Raj Patel",
-  "created_at": "2026-03-26T12:00:30Z"
+  "created_at": "2026-09-26T12:00:30Z",
+  "updated_at": "2026-09-26T12:00:30Z",
+  "completed_at": null
 }
 ```
 
@@ -184,16 +194,44 @@ curl -s -X POST http://localhost:8000/transfers \
 Use the admin endpoint to advance the transfer through all settlement states:
 
 ```bash
-curl -s -X POST http://localhost:8000/admin/transfers/t_xyz789/advance-all \
+curl -s -X POST http://localhost:8000/admin/transfers/tx_xyz789/advance-all \
   | python -m json.tool
 ```
 
 ```json
 {
-  "transfer_id": "t_xyz789",
+  "transfer_id": "tx_xyz789",
   "final_status": "completed",
-  "steps_executed": 8,
-  "message": "Transfer completed successfully"
+  "steps": [
+    {
+      "from": "quoted",
+      "to": "funded"
+    },
+    {
+      "from": "funded",
+      "to": "usd_to_usdc_complete"
+    },
+    {
+      "from": "usd_to_usdc_complete",
+      "to": "onchain_transfer_pending"
+    },
+    {
+      "from": "onchain_transfer_pending",
+      "to": "onchain_transfer_confirmed"
+    },
+    {
+      "from": "onchain_transfer_confirmed",
+      "to": "usdc_to_inr_pending"
+    },
+    {
+      "from": "usdc_to_inr_pending",
+      "to": "settled"
+    },
+    {
+      "from": "settled",
+      "to": "completed"
+    }
+  ]
 }
 ```
 
@@ -202,7 +240,7 @@ curl -s -X POST http://localhost:8000/admin/transfers/t_xyz789/advance-all \
 Check the complete event history:
 
 ```bash
-curl -s http://localhost:8000/transfers/t_xyz789/timeline \
+curl -s http://localhost:8000/transfers/tx_xyz789/timeline \
   | python -m json.tool
 ```
 
@@ -211,7 +249,7 @@ curl -s http://localhost:8000/transfers/t_xyz789/timeline \
 See the fee and latency savings:
 
 ```bash
-curl -s http://localhost:8000/transfers/t_xyz789/comparison \
+curl -s http://localhost:8000/transfers/tx_xyz789/comparison \
   | python -m json.tool
 ```
 
@@ -228,7 +266,7 @@ This executes a full USD 500 → INR transfer, advancing through every settlemen
 
 ## What's Next
 
-- [Architecture](architecture) — Understand the system design and payment lifecycle
-- [API Reference](api-reference) — Full endpoint documentation
-- [Settlement State Machine](settlement) — Deep dive into the 10-state lifecycle
-- [Ledger System](ledger) — How double-entry accounting works
+- [Architecture](architecture.md) — Understand the system design and payment lifecycle
+- [API Reference](api-reference.md) — Full endpoint documentation
+- [Settlement State Machine](settlement.md) — Deep dive into the 10-state lifecycle
+- [Ledger System](ledger.md) — How double-entry accounting works

@@ -5,13 +5,20 @@ nav_order: 5
 ---
 
 # Settlement State Machine
-{: .no_toc }
+
+[Documentation home](index.md)
 
 The 10-state lifecycle that governs every cross-border transfer from creation to completion.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [State Diagram](#state-diagram)
+- [Valid Transitions](#valid-transitions)
+- [State Handlers](#state-handlers)
+- [Advance Mechanisms](#advance-mechanisms)
+- [Error Handling](#error-handling)
+- [Event Emission](#event-emission)
 
 ---
 

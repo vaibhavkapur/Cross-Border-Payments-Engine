@@ -5,13 +5,18 @@ nav_order: 3
 ---
 
 # Architecture
-{: .no_toc }
+
+[Documentation home](index.md)
 
 System design, payment lifecycle, and architectural patterns behind the Cross-Border Payments Engine.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [System Overview](#system-overview)
+- [Payment Lifecycle](#payment-lifecycle)
+- [Detailed Payment Flow](#detailed-payment-flow)
+- [Architectural Patterns](#architectural-patterns)
+- [Infrastructure](#infrastructure)
 
 ---
 

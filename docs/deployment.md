@@ -5,13 +5,22 @@ nav_order: 13
 ---
 
 # Deployment
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Production deployment guide, infrastructure requirements, and operational considerations.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Prerequisites](#prerequisites)
+- [Build](#build)
+- [Run](#run)
+- [Infrastructure Requirements](#infrastructure-requirements)
+- [Production Checklist](#production-checklist)
+- [Horizontal Scaling](#horizontal-scaling)
+- [Monitoring](#monitoring)
+- [Reverse Proxy](#reverse-proxy)
+- [Environment Profiles](#environment-profiles)
 
 ---
 

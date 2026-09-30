@@ -5,13 +5,16 @@ nav_order: 10
 ---
 
 # Database Schema
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Complete schema reference for all seven database tables powering the payments engine.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Entity Relationship Diagram](#entity-relationship-diagram)
+- [Tables](#tables)
+- [Migrations](#migrations)
 
 ---
 
@@ -132,7 +135,7 @@ Double-entry accounting records for all value movements.
 |:-------|:-----|:------------|:------------|
 | `id` | VARCHAR | PK | Unique entry identifier |
 | `transfer_id` | VARCHAR | FK → transfers.id, NOT NULL | Associated transfer |
-| `entry_type` | VARCHAR(20) | NOT NULL | Entry type (see [Ledger System](ledger)) |
+| `entry_type` | VARCHAR(20) | NOT NULL | Entry type (see [Ledger System](ledger.md)) |
 | `account_debit` | VARCHAR(50) | NOT NULL | Debited account name |
 | `account_credit` | VARCHAR(50) | NOT NULL | Credited account name |
 | `amount` | NUMERIC(18,2) | NOT NULL | Entry amount |

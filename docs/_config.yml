@@ -3,12 +3,12 @@ description: Stablecoin-powered remittance engine for fast, low-cost USD→INR c
 theme: just-the-docs
 color_scheme: dark
 
-url: https://vaibhavkapur22.github.io
+url: "https://vaibhavkapur.github.io"
 baseurl: /Cross-Border-Payments-Engine
 
 aux_links:
   GitHub:
-    - https://github.com/vaibhavkapur22/Cross-border-Payments-Engine
+    - https://github.com/vaibhavkapur/Cross-Border-Payments-Engine
 
 aux_links_new_tab: true
 
@@ -24,9 +24,10 @@ search:
 back_to_top: true
 back_to_top_text: "Back to top"
 
-footer_content: "Copyright &copy; 2026. Distributed under the <a href=\"https://github.com/vaibhavkapur22/Cross-border-Payments-Engine/blob/main/LICENSE\">MIT License.</a>"
+footer_content: "Cross-Border Payments Engine documentation."
 
 plugins:
+  - jekyll-relative-links
   - jekyll-seo-tag
 
 kramdown:

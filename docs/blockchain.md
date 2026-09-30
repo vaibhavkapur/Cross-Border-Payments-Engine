@@ -5,13 +5,20 @@ nav_order: 8
 ---
 
 # Blockchain Integration
-{: .no_toc }
+
+[Documentation home](index.md)
 
 Simulated USDC transfers on Base Sepolia with transaction tracking and confirmation monitoring.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [Simulation Architecture](#simulation-architecture)
+- [Simulated Operations](#simulated-operations)
+- [Blockchain Transaction Schema](#blockchain-transaction-schema)
+- [Settlement Events](#settlement-events)
+- [Future: Live Testnet Integration](#future-live-testnet-integration)
+- [Chain Configuration](#chain-configuration)
 
 ---
 
@@ -76,7 +83,6 @@ When advancing from `onchain_transfer_pending`, the simulator:
 | Required confirmations | 12 | Number of block confirmations needed |
 | Confirmation time | ~30 seconds | Simulated time for confirmations |
 
-{: .note }
 Base Sepolia has ~2 second block times, so 12 confirmations would take ~24 seconds in reality. The simulator reflects this in the timing estimates.
 
 ## Blockchain Transaction Schema

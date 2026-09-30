@@ -5,13 +5,20 @@ nav_order: 6
 ---
 
 # FX & Quote Engine
-{: .no_toc }
+
+[Documentation home](index.md)
 
 FX rate sourcing, fee calculation, and quote generation for cross-border transfers.
-{: .fs-6 .fw-300 }
 
-1. TOC
-{:toc}
+## On this page
+
+- [Overview](#overview)
+- [Quote Generation Flow](#quote-generation-flow)
+- [Fee Components](#fee-components)
+- [FX Rate Source](#fx-rate-source)
+- [Quote Lifecycle](#quote-lifecycle)
+- [Quote Response Schema](#quote-response-schema)
+- [Configuration](#configuration)
 
 ---
 
@@ -65,10 +72,9 @@ Total deducted:   $3.85
 Net amount:       $496.15  (500.00 - 3.85)
 FX rate:          83.20    (USD/INR mid-market)
 ─────────────────────────
-Recipient gets:   ₹41,279.88  (496.15 × 83.20)
+Recipient gets:   ₹41,279.68  (496.15 × 83.20)
 ```
 
-{: .note }
 The payout partner fee ($0.75) is included in the comparison engine calculations but is not deducted from the quote amount in the MVP. It appears in the full fee comparison against SWIFT.
 
 ## FX Rate Source

@@ -1,29 +1,40 @@
 ---
 title: Home
-layout: home
+layout: default
 nav_order: 1
 ---
 
 # Cross-Border Payments Engine
-{: .fs-9 }
 
-A stablecoin-powered remittance engine that enables fast, low-cost USD→INR cross-border transfers using USDC on Base Sepolia.
-{: .fs-6 .fw-300 }
+A remittance demonstration for USD-to-INR transfers, with FX quotes, a settlement state machine, double-entry ledger accounting, and modeled stablecoin-versus-SWIFT comparisons.
 
-[Get Started](getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[API Reference](api-reference){: .btn .fs-5 .mb-4 .mb-md-0 }
+[Get Started](getting-started.md) · [API Reference](api-reference.md) · [Repository README](https://github.com/vaibhavkapur/Cross-Border-Payments-Engine/blob/master/README.md)
 
----
+## Documentation
+
+- [Getting Started](getting-started.md)
+- [Architecture](architecture.md)
+- [API Reference](api-reference.md)
+- [Configuration](configuration.md)
+- [Database Schema](database.md)
+- [Testing](testing.md)
+- [Deployment](deployment.md)
+- [Settlement State Machine](settlement.md)
+- [FX & Quote Engine](fx-engine.md)
+- [Ledger System](ledger.md)
+- [Blockchain Integration](blockchain.md)
+- [Comparison Engine](comparison.md)
+- [Workers](workers.md)
 
 ## Overview
 
-The Cross-Border Payments Engine is a production-grade remittance infrastructure system that demonstrates how stablecoins can replace legacy SWIFT rails for international money transfers. It provides FX quoting, fee calculation, a settlement state machine, double-entry ledger accounting, and real-time benchmarking against SWIFT fees and latency.
+The engine demonstrates the lifecycle of a remittance through FX quoting, fee calculation, settlement transitions, and ledger posting. Its stablecoin and SWIFT comparison uses configured assumptions rather than live bank quotes.
 
-Built with **FastAPI**, **SQLAlchemy**, and **Celery**, the engine processes a USD 500 transfer to India in under 13 minutes at ~$4.55 in fees — compared to SWIFT's ~$37 and 4+ hour settlement time.
+Fee and latency figures in the comparison guides are modeled estimates. They are not measured settlement times or commitments from a payment provider.
 
 ## Key Features
 
-- **FX Quote Engine** — Real-time USD/INR quotes with transparent fee breakdown (platform, network, FX spread)
+- **FX Quote Engine** — Configured USD/INR quotes with transparent fee breakdown (platform, network, FX spread)
 - **Settlement State Machine** — 10-state lifecycle with enforced valid transitions and event sourcing
 - **Double-Entry Ledger** — Full accounting trail for every value movement across the transfer lifecycle
 - **Blockchain Integration** — Simulated USDC transfers on Base Sepolia with transaction tracking
@@ -61,7 +72,9 @@ Built with **FastAPI**, **SQLAlchemy**, and **Celery**, the engine processes a U
                     └──────────────────────────────────────────────┘
 ```
 
-## Tech Stack
+## Tech Stack and Scope
+
+Python / FastAPI / SQLAlchemy / Celery, with SQLite or PostgreSQL and Redis. FX rates and comparison inputs are configured values; USDC transfers and local payouts are simulated.
 
 | Component | Technology |
 |:----------|:-----------|
@@ -78,7 +91,7 @@ Built with **FastAPI**, **SQLAlchemy**, and **Celery**, the engine processes a U
 ## Project Structure
 
 ```
-Cross-border Payments Engine/
+Cross-Border-Payments-Engine/
 ├── app/
 │   ├── api/                    # FastAPI route handlers
 │   │   ├── admin.py            # Settlement state controls
@@ -107,9 +120,18 @@ Cross-border Payments Engine/
 ├── migrations/                  # Alembic migration scripts
 ├── scripts/
 │   └── demo.sh                 # End-to-end demo script
-├── tests/                       # Test suite
 ├── docker-compose.yml           # Local dev environment
 ├── Dockerfile                   # Container image
 ├── requirements.txt             # Python dependencies
 └── alembic.ini                  # Migration configuration
 ```
+
+## Related projects
+
+These are independent companion repositories. The links describe related work, not implemented runtime integrations:
+
+- [Agent Authorization Wallet + Merchant Trust Gateway](https://github.com/vaibhavkapur/Agent-Authorization-Wallet-Merchant-Trust-Gateway): purchase authorization, merchant verification, and execution evidence.
+- [Agent Services Marketplace](https://github.com/vaibhavkapur/Agent-Services-Marketplace): service discovery, quotes, and agent purchase workflows.
+- [Agentic Commerce Protocol Test Lab](https://github.com/vaibhavkapur/Agentic-Commerce-Protocol-Test-Lab): protocol fixtures, scenarios, and conformance checks.
+- [Autonomous Price Watch Buyer](https://github.com/vaibhavkapur/Autonomous-Price-Watch-Buyer): price monitoring and bounded purchase decisions.
+- [Cross-Merchant Procurement Agent](https://github.com/vaibhavkapur/Cross-Merchant-Procurement-Agent): merchant comparison and procurement planning.
